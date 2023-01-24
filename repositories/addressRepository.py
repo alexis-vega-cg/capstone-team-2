@@ -1,10 +1,8 @@
-
-from models.customer import Customer
+from models.address import Address
 import psycopg2
 
-
-class CustomerRepository():
-    def insert(self, customer: Customer):
+class AddressRepository():
+    def insert(self, address: Address):
         connection = psycopg2.connect(
         host="localhost",
         database="capstone",
@@ -14,10 +12,10 @@ class CustomerRepository():
         connection.set_session(autocommit=True)
         with connection.cursor() as cursor:
             cursor.execute(
-                'INSERT INTO customer (firstName, lastName, AddressID, Email) VALUES (%s,%s,%s,%s)',[customer.firstName, customer.lastName, customer.address.id, customer.email])
-            return customer
+                'INSERT INTO address (Address, City, State, ZipCode) VALUES (%s,%s,%s,%s)',[address.address,address.city,address.state,address.zipCode])
+            return address
 
-    def getOne(self, customerNumber):
+    def getOne(self, addressNumber):
         connection = psycopg2.connect(
         host="localhost",
         database="capstone",
@@ -27,6 +25,6 @@ class CustomerRepository():
         connection.set_session(autocommit=True)
         with connection.cursor() as cursor:
             cursor.execute(
-                'SELECT id, firstName, lastName, AddressID, Email FROM  WHERE ID=(%s);', [customerNumber])
+                'SELECT id, Address, City , State , ZipCode FROM address WHERE ID=(%s);', [addressNumber])
             result = cursor.fetchone()
-            return Customer(id=result[0], firstName=result[1], lastName=result[2], address=result[3], email=result[4])
+            return Address(id=result[0], address=result[1], city=result[2], state=result[3], zipCode=result[4])

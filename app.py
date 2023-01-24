@@ -3,17 +3,23 @@ import uvicorn
 from fastapi import FastAPI
 from typing import List
 from models.account import Account
+from models.address import Address
 from models.customer import Customer
+from repositories.addressRepository import AddressRepository
 from services.accountService import AccountService
 from repositories.accountRepository import AccountRepository
 from repositories.customerRepository import CustomerRepository
+from services.addressService import AddressService
 from services.customerService import CustomerService
 
 app = FastAPI()
 accountRepository = AccountRepository()
 customerRepository = CustomerRepository()
+addressRepository = AddressRepository()
+
 accountService = AccountService(customerRepository, accountRepository)
 customerService = CustomerService(customerRepository)
+addressService = AddressService(addressRepository)
 
 @app.post('/api/bankAccount/new')
 async def createBankAccount(account: Account): #{'accountNumber': 'something','currentBalance':25,'customerId':1}
@@ -24,9 +30,13 @@ async def createBankAccount(account: Account): #{'accountNumber': 'something','c
 async def createCustomer(customer: Customer):
     return customerService.addNew(customer)
 
-# @app.route('/api/Customer/new')
-# async def createCustomer(customer: Customer):
-#     return customerService.addNew(customer)
+@app.get('/api/Address/{id}')
+async def getAddress(id):
+    return addressService.getOne(id)
+
+@app.post('/api/Address/new')
+async def createAddress(address: Address):
+    return addressService.addNew(address)
 
 if __name__ == "__main__":
     uvicorn.run("app:app", host="0.0.0.0", port=8080, reload=True,
