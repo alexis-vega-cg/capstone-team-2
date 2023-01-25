@@ -1,4 +1,3 @@
-
 from models.customer import Customer
 import psycopg2
 
@@ -13,8 +12,19 @@ class CustomerRepository():
         )
         connection.set_session(autocommit=True)
         with connection.cursor() as cursor:
-            cursor.execute(
-                'INSERT INTO customer (firstName, lastName, AddressID, Email) VALUES (%s,%s,%s,%s)',[customer.firstName, customer.lastName, customer.address.id, customer.email])
+            cursor.execute("""
+                INSERT INTO customer
+                    (FirstName, LastName, AddressID, Email) VALUES
+                    (%(FirstName)s, %(LastName)s, %(AddressID)s, %(Email)s)
+                RETURNING ID
+                """, {
+                    'FirstName': customer.firstName,
+                    'LastName': customer.lastName,
+                    'AddressID' : customer.address.id, 
+                    'Email' : customer.email
+                }
+            )
+            customer.id = cursor.fetchone()[0]
             return customer
 
     def getOne(self, customerNumber):

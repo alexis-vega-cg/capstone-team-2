@@ -11,8 +11,13 @@ class AddressRepository():
         )
         connection.set_session(autocommit=True)
         with connection.cursor() as cursor:
-            cursor.execute(
-                'INSERT INTO address (Address, City, State, ZipCode) VALUES (%s,%s,%s,%s)',[address.address,address.city,address.state,address.zipCode])
+            cursor.execute('''
+             INSERT INTO address (Address, City, State, ZipCode) VALUES (%s,%s,%s,%s) 
+             RETURNING ID
+            ''',
+            [address.address,address.city,address.state,address.zipCode]
+            )
+            address.id = cursor.fetchone()[0]
             return address
 
     def getOne(self, addressNumber):

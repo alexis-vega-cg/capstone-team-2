@@ -6,19 +6,20 @@ from models.account import Account
 from models.address import Address
 from models.customer import Customer
 from repositories.addressRepository import AddressRepository
-from services.accountService import AccountService
 from repositories.accountRepository import AccountRepository
 from repositories.customerRepository import CustomerRepository
+from services.accountService import AccountService
 from services.addressService import AddressService
 from services.customerService import CustomerService
+
 
 app = FastAPI()
 accountRepository = AccountRepository()
 customerRepository = CustomerRepository()
 addressRepository = AddressRepository()
 
-accountService = AccountService(customerRepository, accountRepository)
-customerService = CustomerService(customerRepository)
+accountService = AccountService(accountRepository, customerRepository, addressRepository)
+customerService = CustomerService(customerRepository, addressRepository)
 addressService = AddressService(addressRepository)
 
 @app.post('/api/bankAccount/new')
