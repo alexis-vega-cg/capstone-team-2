@@ -11,6 +11,8 @@ from repositories.customerRepository import CustomerRepository
 from services.accountService import AccountService
 from services.addressService import AddressService
 from services.customerService import CustomerService
+from typing import List
+
 
 
 app = FastAPI()
@@ -23,17 +25,22 @@ customerService = CustomerService(customerRepository, addressRepository)
 addressService = AddressService(addressRepository)
 
 @app.post('/api/bankAccount/new')
-async def createBankAccount(account: Account): #{'accountNumber': 'something','currentBalance':25,'customerId':1}
-    #TODO: create bank account -> customer and address, min balance of 25
+async def createBankAccount(account: Account): 
     return accountService.addNew(account)
+
+@app.get('/api/BankAccount/', response_model = List[Account])
+async def getAllBankAccounts():
+    return accountService.getAll()
 
 @app.post('/api/Customer/new')
 async def createCustomer(customer: Customer):
     return customerService.addNew(customer)
 
+"""
 @app.get('/api/Address/{id}')
 async def getAddress(id):
     return addressService.getOne(id)
+"""
 
 @app.post('/api/Address/new')
 async def createAddress(address: Address):

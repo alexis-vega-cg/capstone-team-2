@@ -8,5 +8,5 @@ class Account(BaseModel):
     currentBalance: int
 
     def __eq__(self, other):
-        return self.id == other.id and self.accountNumber == other.accountNumber and \
-            self.customer == other.customer and self.currentBalance == other.currentBalance
+            return self.id == other.id and self.accountNumber == other.accountNumber and \
+                self.customer == other.customer and self.currentBalance == other.currentBalance
