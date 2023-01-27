@@ -5,7 +5,7 @@ class Account(BaseModel):
     id: int
     accountNumber: str
     customer: Customer
-    currentBalance: int
+    currentBalance: float
 
     def __eq__(self, other):
             return self.id == other.id and self.accountNumber == other.accountNumber and \

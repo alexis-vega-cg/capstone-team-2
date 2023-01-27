@@ -28,35 +28,27 @@ addressService = AddressService(addressRepository)
 async def createBankAccount(account: Account): 
     return accountService.addNew(account)
 
-@app.get('/api/BankAccount/', response_model = List[Account])
+@app.get('/api/bankAccount/', response_model = List[Account])
 async def getAllBankAccounts():
     return accountService.getAll()
 
-@app.post('/api/Customer/new')
-async def createCustomer(customer: Customer):
-    return customerService.addNew(customer)
 
-"""
-@app.get('/api/Address/{id}')
-async def getAddress(id):
-    return addressService.getOne(id)
-"""
+@app.get('/api/bankAccount/{id}')
+async def getBankAccountById(accountNumber):
+    return accountService.getOneByAccountNumber(accountNumber)
 
-@app.post('/api/Address/new')
-async def createAddress(address: Address):
-    return addressService.addNew(address)
+@app.post('/api/bankAccount/deposit/{id}')
+async def depositIntoAccount(accountNumber, deposit: float):
+    return accountService.depositIntoAccount(accountNumber, deposit)
+
+@app.post('/api/bankAccount/withdraw/{id}')
+async def withdrawFromAccount(accountNumber, withdraw: float):
+    return accountService.withdrawFromAccount(accountNumber, withdraw)
+
+@app.post('/api/bankAccount/close/{id}')
+async def closeAccount(accountNumber):
+    return accountService.closeAccount(accountNumber)
 
 if __name__ == "__main__":
     uvicorn.run("app:app", host="0.0.0.0", port=8080, reload=True,
             timeout_keep_alive=3600, workers=10)
-    # connection = psycopg2.connect(
-    # host="localhost",
-    # database="capstone",
-    # user="postgres",
-    # password="password123"
-    # )
-    # connection.set_session(autocommit=True)
-    # with connection.cursor() as cursor:
-    #     cursor.execute('SELECT * FROM account')
-    #     result = cursor.fetchone()
-    #     print(result)

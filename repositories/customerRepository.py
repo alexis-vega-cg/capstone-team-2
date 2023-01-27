@@ -8,7 +8,7 @@ addressRepository = AddressRepository()
 class CustomerRepository():
     def insert(self, customer: Customer):
         connection = psycopg2.connect(
-        host="localhost",
+        host="capstone-team2-aexv.ckokfd9swhyk.us-west-2.rds.amazonaws.com",
         database="capstone",
         user="postgres",
         password="password123"
@@ -32,7 +32,7 @@ class CustomerRepository():
 
     def getOne(self, customerNumber):
         connection = psycopg2.connect(
-        host="localhost",
+        host="capstone-team2-aexv.ckokfd9swhyk.us-west-2.rds.amazonaws.com",
         database="capstone",
         user="postgres",
         password="password123"

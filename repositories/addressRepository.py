@@ -4,7 +4,7 @@ import psycopg2
 class AddressRepository():
     def insert(self, address: Address):
         connection = psycopg2.connect(
-        host="localhost",
+        host="capstone-team2-aexv.ckokfd9swhyk.us-west-2.rds.amazonaws.com",
         database="capstone",
         user="postgres",
         password="password123"
@@ -22,7 +22,7 @@ class AddressRepository():
 
     def getOne(self, addressNumber):
         connection = psycopg2.connect(
-        host="localhost",
+        host="capstone-team2-aexv.ckokfd9swhyk.us-west-2.rds.amazonaws.com",
         database="capstone",
         user="postgres",
         password="password123"
